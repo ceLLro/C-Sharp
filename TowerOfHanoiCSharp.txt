@@ -1,0 +1,37 @@
+using System;
+
+// tower of hanoi 
+namespace Learning
+{
+    internal class Program
+    {
+        public static int step = 1;
+        private static void Main(string[] args)
+        { 
+            //MoveHanoi(number of disks, starting point, helping point, final point);
+            MoveHanoi(21, "A", "B", "C");
+            Console.ReadLine();
+        }
+        public static void Move(string from, string to)
+        {
+            Console.WriteLine("Step {0} : Moved from {1} to {2}", step, from, to);
+            step++;
+        }
+        public static void MoveVia(string from, string via, string to)
+        {
+            Move(from, via);
+            Move(via, to);
+        }
+        public static void MoveHanoi(int disks, string from, string help, string to)
+        {
+            if (disks == 0)
+            {
+            }
+            else {
+                MoveHanoi(disks - 1, from, to, help);
+                Move(from, to);
+                MoveHanoi(disks - 1, help,from,to);
+            }
+        }
+    }
+}
