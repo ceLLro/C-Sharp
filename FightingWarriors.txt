@@ -1,0 +1,110 @@
+using System;
+
+namespace Learning
+{
+    internal class Program
+    {
+
+        private static void Main(string[] args)
+        {
+            Warrior David = new Warrior("David", 1000, 120, 40);
+            Warrior Goliath = new Warrior("Goliath", 1000, 120, 40);
+
+            Battle.StartFight(David, Goliath);
+            Console.ReadLine();
+        }
+
+        class Warrior
+        {
+            // Name Health Attack_Maximum Block_Maximum.
+            public string Name { get; set; } = "Warrior";
+            public double Health { get; set; } = 0;
+            public double Attack_Maximum { get; set; } = 0;
+            public double Block_Maximum { get; set; } = 0;
+            // Random numbers
+            Random rnd = new Random();
+
+            public Warrior(string name = "Warrior",
+                           double health = 0,
+                           double attack_maximum = 0,
+                           double block_maximum = 0)
+            {
+                Name = name;
+                Health = health;
+                Attack_Maximum = attack_maximum;
+                Block_Maximum = block_maximum;
+            }
+        
+
+            // Attack 
+            // Generate a random attack from 1 to the maximum possible attack
+
+            public double Attack()
+            {
+                return rnd.Next(1, (int)Attack_Maximum);
+            }
+            // Block
+            // Generate a random block from 1 to the maximum possible block
+            public double Block()
+            {
+                return rnd.Next(1, (int)Block_Maximum);
+            }
+            //default constructor
+
+            
+        }
+        class Battle
+        {
+            // StartFight 
+            // Warrior1 Warrior2 for parameters
+            // Loop giving each warrior a chance to attack and block each turn until one dies
+
+            public static void StartFight(Warrior warrior1, Warrior warrior2)
+            {
+                while (true)
+                {
+                    if (GetAttackResult(warrior1, warrior2) == "Game Over")
+                    {
+                        Console.WriteLine("Game Over");
+                        break;
+                    }
+                    if (GetAttackResult(warrior2, warrior1) == "Game Over")
+                    {
+                        Console.WriteLine("Game Over");
+                        break;
+                    }
+                }
+            }
+
+            // GetAttackResult
+            public static string GetAttackResult(Warrior warriorA, Warrior warriorB)
+            {
+                double warAAttackAmount = warriorA.Attack();
+                double warBBlockAmount = warriorB.Block();
+
+                double dmg2WarB = warAAttackAmount - warBBlockAmount;
+
+                if (dmg2WarB > 0)
+                {
+                    warriorB.Health -= dmg2WarB;
+                }
+                else dmg2WarB = 0;
+
+                Console.WriteLine("{0} Attacks {1} and Deals {2} Damage",
+                    warriorA.Name,
+                    warriorB.Name,
+                    dmg2WarB);
+
+                Console.WriteLine("{0} has {1} health \n", warriorB.Name, warriorB.Health);
+
+                if (warriorB.Health <= 0)
+                {
+                    Console.WriteLine("{0} has Died and {1} is Victorious\n", warriorB.Name,
+                        warriorA.Name);
+                    return "Game Over";
+                }
+                else return "Fight again";
+            }
+        }
+    }
+}
